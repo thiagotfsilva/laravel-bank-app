@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\User\Dto;
+namespace App\UseCases\User\Dto;
 
 use DateTime;
 

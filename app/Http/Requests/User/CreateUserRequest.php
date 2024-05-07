@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\User;
 
-use App\Domain\User\Dto\CreateUserDto;
+use App\UseCases\User\Dto\CreateUserDto;
 use DateTime;
 use Illuminate\Foundation\Http\FormRequest;
 

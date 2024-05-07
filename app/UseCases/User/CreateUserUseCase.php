@@ -1,22 +1,30 @@
 <?php
 
-namespace App\Domain\User\UseCases;
+namespace App\UseCases\User;
 
-use App\Domain\User\Dto\CreateUserDto;
-use App\Domain\User\Entity\User;
+use App\Enitity\User;
 use App\Mail\CreateUserEmail;
 use App\Models\User as ModelsUser;
+use App\UseCases\Account\CreateAccountUseCase;
+use App\UseCases\User\Dto\CreateUserDto;
 use Illuminate\Support\Facades\Mail;
 
 class CreateUserUseCase
 {
+    private CreateAccountUseCase $createAccountUseCase;
+
+    public function __construct(CreateAccountUseCase $createAccountUseCase)
+    {
+        $this->createAccountUseCase = $createAccountUseCase;
+    }
+
     public function execute(CreateUserDto $input)
     {
         $user = $this->createUser($input);
         $data = ModelsUser::create($user->serializable());
 
         Mail::to($user->getEmail())->send(new CreateUserEmail());
-
+        $this->createAccountUseCase->execute($data['id']);
         return $data;
     }
 
